@@ -62,9 +62,6 @@ if ticker:
         # Display the prediction result
         st.title(f"Prediction: {prediction}")
 
-        # ... [Rest of your existing Streamlit code for plotting, etc.] ...
-
-
         if not stock_data.empty:
             # Plotting the stock data using Plotly
             fig = go.Figure()
