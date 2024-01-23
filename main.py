@@ -5,6 +5,7 @@ import plotly.graph_objs as go
 from sentiment import Sentiment  # Assuming sentiment.py contains the Sentiment class
 import subprocess
 import datetime
+from dateutil.relativedelta import relativedelta
 
 # Streamlit configurations
 st.set_option('deprecation.showPyplotGlobalUse', False)
@@ -15,8 +16,17 @@ st.title('Advanced Stock Data and Sentiment Analysis App')
 # User input for the stock ticker
 ticker = st.text_input("Enter a stock ticker (e.g., AAPL, TSLA):")
 
-# Date input for start and end date
-start_date = st.date_input("Start date")
+# Get today's date
+today = datetime.date.today()
+
+# Calculate the date 2 months before today
+max_date = today - relativedelta(months=3)
+
+# Calculate the date 2 months and 1 day before today
+default_date = today - relativedelta(months=3, days=1)
+
+# Date input for start date
+start_date = st.date_input("Start date", value=default_date, max_value=max_date)
 
 # do not continue if start date is later than today:
 if start_date > datetime.date.today():

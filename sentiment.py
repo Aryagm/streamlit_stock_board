@@ -90,11 +90,15 @@ class Sentiment:
             df = df[df['date'] >= oldest_date]
 
         plt.rcParams['figure.figsize'] = [10, 6]
+        # Convert 'date' to datetime if it's not already
+        if not pd.api.types.is_datetime64_any_dtype(df['date']):
+            df['date'] = pd.to_datetime(df['date'])
 
-        mean_scores = df.groupby(['ticker', 'date']).mean()
-        mean_scores = mean_scores.unstack()
-        mean_scores = mean_scores.xs('Overall', axis="columns").transpose()
-        mean_scores.plot(kind='bar')
+        # Group by 'ticker' and 'date', and compute the mean of 'Overall'
+        mean_scores = df.groupby(['ticker', df['date'].dt.date])['Overall'].mean()
+
+        # Plot the mean scores
+        mean_scores.plot(kind='bar', figsize=(10, 6))
 
         plt.tight_layout()
         plt.grid()
